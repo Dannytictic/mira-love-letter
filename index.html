@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>💌 For My Mira</title>
+<style>
+:root {
+  --accent: #ff6f91;
+  --accent2: #ff8fab;
+  --bg1: #fff8fb;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #fbeff5, #fde9f3, #fff8fb);
+  font-family: "Poppins", system-ui, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.stage {
+  text-align: center;
+}
+
+.envelope {
+  position: relative;
+  width: clamp(300px, 60vw, 600px);
+  height: clamp(200px, 40vw, 380px);
+  background: var(--accent);
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  cursor: pointer;
+  overflow: visible;
+  transition: transform 0.3s ease;
+}
+
+.envelope:hover { transform: scale(1.03); }
+
+.flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-left: calc(clamp(300px,60vw,600px)/2) solid transparent;
+  border-right: calc(clamp(300px,60vw,600px)/2) solid transparent;
+  border-bottom: calc(clamp(200px,40vw,380px)/2) solid var(--accent2);
+  transform-origin: top;
+  transition: transform 0.7s ease;
+}
+
+.letter {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  background: white;
+  border-radius: 12px;
+  transform: translateY(130%);
+  transition: transform 1s ease;
+  padding: clamp(10px, 3vw, 30px);
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.letter p {
+  font-size: clamp(0.9rem, 2vw, 1.2rem);
+  color: #333;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+.open .flap { transform: rotateX(180deg); }
+.open .letter { transform: translateY(0); }
+
+.heart-cta {
+  margin-top: 1rem;
+  color: #555;
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+}
+
+/* floating hearts */
+.hearts { position:fixed; inset:0; pointer-events:none; overflow:hidden;}
+.hearts i {position:absolute; font-style:normal; opacity:.9; animation:floatUp linear infinite;}
+@keyframes floatUp {
+  0%{transform:translateY(100vh) scale(.7);opacity:0}
+  10%{opacity:1}
+  100%{transform:translateY(-20vh) scale(1.2);opacity:0}
+}
+</style>
+</head>
+<body>
+  <div class="hearts" id="hearts"></div>
+
+  <div class="stage">
+    <div class="envelope" id="envelope">
+      <div class="flap"></div>
+      <div class="letter" id="letter">
+        <p id="typed-text"></p>
+      </div>
+    </div>
+    <div class="heart-cta">Tap the envelope to open 💌</div>
+  </div>
+
+<script>
+const letterText = `My Mira ❤️✨
+
+Wow… just one month 🥹💫. One beautiful, chaotic, unforgettable month with you.
+We’ve laughed till our cheeks hurt 😅, argued till our hearts felt heavy 💔, and yet,
+we still find our way back to each other ,every single time 🫶🏽.
+
+You’re my peace, my storm, my calm and my chaos 🌧️☀️.
+Every message from you lights me up; every moment feels like home 💞.
+Here’s to us, to one month of love, lessons, and forever energy ❤️‍🔥
+
+You’re my little miracle ,literally and beautifully 💫💋
+
+Forever your person,
+Titilayo 💌`;
+
+const typed = document.getElementById('typed-text');
+let i = 0;
+function type() {
+  if (i < letterText.length) {
+    typed.textContent += letterText.charAt(i);
+    i++;
+    setTimeout(type, 25);
+  }
+}
+
+const env = document.getElementById('envelope');
+let heartInterval;
+env.addEventListener('click', () => {
+  env.classList.toggle('open');
+  if (env.classList.contains('open')) {
+    if (i===0) type();
+    heartInterval = setInterval(spawnHeart, 700);
+  } else {
+    clearInterval(heartInterval);
+  }
+});
+
+function spawnHeart() {
+  const hearts = document.getElementById('hearts');
+  const h = document.createElement('i');
+  h.textContent = '💖';
+  const size = Math.random()*24 + 14;
+  h.style.fontSize = size+'px';
+  h.style.left = Math.random()*100+'vw';
+  h.style.animationDuration = (Math.random()*6+5)+'s';
+  hearts.appendChild(h);
+  setTimeout(()=>h.remove(),11000);
+}
+</script>
+</body>
+</html>
